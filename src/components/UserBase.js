@@ -61,7 +61,7 @@ exportToJsonFile = () => {
                 <Container style={{marginTop:10}}>
                 <ul style={{listStyle:"none", listStyleType:'none', margin:0, padding: 0}}>
                 {JSON.parse(localStorage.getItem('done')).map((item)=>
-                <Container style={{backgroundColor:'#f3f3f3', marginBottom:5, borderRadius:10, boxShadow: '6px 6px 12px -4px rgba(0,0,0,0.42)'}}>
+                <Container style={{backgroundColor:'#f3f3f3', marginBottom:5, borderRadius:10, boxShadow: '6px 6px 12px -4px rgba(0,0,0,0.42)', opacity:'0.8'}}>
                     <Button style={{marginBottom:10, marginTop:10}} variant="contained" color="secondary" size='small' onClick={()=>this.deleteItem(item.id)}>Delete</Button>
                     <li><Typography variant="overline">Album: </Typography><Typography variant="button">{item.title}</Typography>
                     <br></br>
