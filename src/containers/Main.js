@@ -11,16 +11,16 @@ import {UserBase} from '../components/UserBase'
 
 class App extends Component {
   render(){
-    const {data, fetchDataAction, render, localStorageData, storageDataAction, update ,deleteItemAction, addItemAction, refresh}=this.props
+    const {data, fetchDataAction, render, localStorageData, storageDataAction, update ,deleteItemAction, addItemAction, refresh, removedData, dataCount}=this.props
     return (
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container spacing={3}>
         <Grid item xs={8}>
       <Search data={data} fetchData={fetchDataAction}/>
-      <SearchResults data={data} render={render} localStorageData={localStorageData} storageData={storageDataAction} deleteItem={deleteItemAction} addItem={addItemAction} refresh={refresh}/>
+      <SearchResults data={data} render={render} localStorageData={localStorageData} storageData={storageDataAction} deleteItem={deleteItemAction} addItem={addItemAction} refresh={refresh} removedData={removedData} dataCount={dataCount}/>
       </Grid>
       <Grid item xs={4}>
-        <Container style={{border:"1px solid black"}}>
+        <Container >
           <UserBase update={update} localStorageData={localStorageData}/>
         </Container>
       </Grid>
@@ -39,7 +39,9 @@ const mapStateToProps = store => {
     render: store.searchReducer.render,
     localStorageData: store.searchReducer.localStorageData,
     update: store.searchReducer.update,
-    refresh: store.searchReducer.refresh
+    refresh: store.searchReducer.refresh,
+    removedData:store.searchReducer.removedData,
+    dataCount: store.searchReducer.dataCount
   }
 }
 const mapDispatchToProps = dispatch => {
@@ -47,7 +49,7 @@ const mapDispatchToProps = dispatch => {
     fetchDataAction:(albumTitle)=>dispatch(fetchData(albumTitle)),
     storageDataAction:(localStorageData)=>dispatch((storageData(localStorageData))),
     deleteItemAction:(id)=>dispatch((deleteItem(id))),
-    addItemAction:()=>dispatch(addItem()),
+    addItemAction:(id)=>dispatch(addItem(id)),
   }
 }
 

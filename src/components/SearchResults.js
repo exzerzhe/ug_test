@@ -7,10 +7,10 @@ export class SearchResults extends React.Component {
     state={
         choosenAlbums: [],
     }
-    handleChange = (id, title, country, date, checked) => {
+    handleChange = (id, title, country, date, checked, artist) => {
         const choosenAlbums = this.state.choosenAlbums
         let obj = {}
-        obj = {...obj,id, title, country, date, checked}
+        obj = {...obj,id, title, country, date, checked, artist}
             choosenAlbums.push(obj)
         this.setState({choosenAlbums:choosenAlbums})
         
@@ -19,7 +19,7 @@ export class SearchResults extends React.Component {
 
         var existingEntries = JSON.parse(localStorage.getItem('albums'))
         if (existingEntries == null) existingEntries = []
-        var entry = this.state.choosenAlbums.map((item)=>{return {id:item.id, title:item.title, country:item.country, date:item.date}})
+        var entry = this.state.choosenAlbums.map((item)=>{return {id:item.id, title:item.title, country:item.country, date:item.date, artist:item.artist}})
         localStorage.setItem('entry', JSON.stringify(entry))
         existingEntries.push(entry)
         localStorage.setItem('albums', JSON.stringify(existingEntries))
@@ -31,37 +31,45 @@ export class SearchResults extends React.Component {
         this.props.storageData(localStorageData)
          
     }
+    onDelete = (id) => {
+const newState = this.state.choosenAlbums.filter(item=>item.id !== id)
+this.setState({choosenAlbums:newState})
+console.log('id2', id)
+this.props.addItem(id)
+    }
 
     
     
     render(){
         if (this.props.render === true){
+            if (this.props.dataCount === 0) {
+                return <Container style={{textAlign:'center', marginTop:40}}><Typography variant="h3">No results</Typography></Container>
+            }
         return(
-            <Container style={{border:'1px solid black', overflowY:'scroll', maxHeight:600}}>
-                {this.props.refresh ?
+            <Container style={{ overflowY:'auto', maxHeight:680}}>
+                <Container style={{backgroundColor:'#f3f3f3', borderRadius:10}}>
+                {this.state.choosenAlbums.length !== 0 ?
                 <Container style={{marginTop:10}}>
-                    <Container style={{textAlign:'center'}}>
-                    <Button variant="contained" color="secondary" onClick={()=>{this.props.addItem(); this.setState({choosenAlbums:[]})}}>Reset</Button>
-                    </Container>
-                    {this.state.choosenAlbums.map((item, key)=><Chip key={item.id} label={item.title}></Chip>)}
+                    {this.state.choosenAlbums.map((item, key)=><Chip key={item.id} color="primary" onDelete={()=>this.onDelete(item.id)} label={item.title} style={{marginTop:10, marginRight:5}}></Chip>)}
                 </Container> : <div></div>}
                 <Container style={{textAlign:'center', marginBottom:10, marginTop:10}}>
-               {this.props.refresh ? <Button variant="contained" color="primary" onClick={()=>{this.handleClick(); this.setState({choosenAlbums:[]})}}>SAVE CHECKED ALBUMS</Button> : null}
+               {this.state.choosenAlbums.length !== 0 ? <Button variant="contained" color="primary" style={{marginBottom:10}} onClick={()=>{this.handleClick(); this.setState({choosenAlbums:[]})}}>SAVE ALBUMS</Button> : null}
+                </Container>
                 </Container>
             <ul style={{listStyle:"none", listStyleType:'none', margin:0, padding: 0}}>
                 {this.props.data.map((item, index)=>
-                <Container style={{border:'1px solid black', marginBottom:5, borderRadius:5, backgroundColor:'#f3f3f3'}}>
+                <Container style={{border:'1px solid black', marginBottom:7, borderRadius:5, backgroundColor:'#f3f3f3', boxShadow:'6px 6px 12px -4px rgba(0,0,0,0.42)'}}>
                     <li key={item.id}>
                         <Grid container spacing = {3}>
                             <Grid item xs ={2}>
                                 <Container style={{padding:5}}>
-                    <Button variant="contained" color="primary" onClick={()=>{this.props.deleteItem(index); this.handleChange(item.id, item.title, item.country, item.date, item.checked )}}>add</Button>
+                    <Button variant="contained" color="primary" onClick={()=>{this.props.deleteItem(index); this.handleChange(item.id, item.title, item.country, item.date, item.checked, item["artist-credit"][0].artist.name )}}>add</Button>
                     </Container>
                     </Grid>
                     <Grid item xs = {9}>
                         <Container style={{textAlign:'center'}}>
-                    <Typography variant="overline"> Album: </Typography><Typography variant='button' style={{fontSize:20}}>{item.title}</Typography>
-                    <Typography variant="overline"> Date: </Typography><Typography variant="button">{item.date}</Typography>
+                    <Typography variant="overline"> Album: </Typography><Typography variant='button'>{item.title}</Typography>
+                    <Typography variant="overline"> Artist: </Typography><Typography variant="button">{item["artist-credit"][0].artist.name}</Typography>
                     </Container>
                     </Grid>
                     </Grid>

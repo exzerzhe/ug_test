@@ -19,10 +19,10 @@ handleChange = (event) => {
 
 render(){
     return(
-        <Container style={{textAlign:"center", border:"1px solid black", padding:10}}>
+        <Container style={{textAlign:"center", borderRadius:10, padding:10}}>
         <form id="myForm">
-        <TextField variant="outlined" type="text" size="small" name="title" placeholder="Album title" onChange={this.handleChange}></TextField><br></br>
-        <Button type="submit" variant="contained" color="primary" onClick={this.onBtnClick} style={{marginTop:10}}>Search</Button>
+        <TextField variant="outlined" type="text" size="small" name="title" placeholder="Album title" onChange={this.handleChange}></TextField>
+        <Button type="submit" variant="contained" color="primary" onClick={this.onBtnClick} style={{marginLeft:15}}>Search</Button>
         </form>
         </Container>
     )

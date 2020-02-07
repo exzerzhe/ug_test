@@ -29,8 +29,9 @@ export function deleteItem (index) {
     }
 } 
 
-export function addItem () {
+export function addItem (index) {
+    console.log('id', index)
     return dispatch => {
-        dispatch({type:ADD_ITEM})
+        dispatch({type:ADD_ITEM, index})
     }
 }

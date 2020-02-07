@@ -1,8 +1,12 @@
 import React from 'react'
-import { Container, Typography, Button } from '@material-ui/core'
+import { Container, Typography, Button, Switch } from '@material-ui/core'
+
 
 
 export class UserBase extends React.Component {
+    state={
+        checked: false
+    }
    
 deleteItem = (id) => {
     const items = JSON.parse(localStorage.getItem('done'))
@@ -18,17 +22,54 @@ deleteItem = (id) => {
     this.forceUpdate()
 }
 
-    render(){
-         if (JSON.parse(localStorage.getItem('done')) === null) return <Container>Saved albums will be displayed here</Container>
+switchChangeTrue = () => {
+    this.setState({checked:true})
+}
+switchChangeFalse = () => {
+    this.setState({checked:false})
+}
+
+exportToJsonFile = () => {
+    let data = JSON.parse(localStorage.getItem('done'))
+    let dataStr = JSON.stringify(data)
+    let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr)
+    let exportFileDefaultName = 'data.json';
+    let linkElement = document.createElement('a')
+    linkElement.setAttribute('href', dataUri)
+    linkElement.setAttribute('download', exportFileDefaultName)
+    linkElement.click()
+}
+
+
+    render(){ 
+        if (this.state.checked === true) {
+        return <Container style={{textAlign:'center'}}>
+            <Switch onChange={()=>this.switchChangeFalse()}></Switch><br></br>
+            <Button style={{marginTop:50}} variant="contained" color="secondary" onClick={()=>this.exportToJsonFile()}>Download your albums data</Button>
+        </Container>
+
+    }
+
+         if (JSON.parse(localStorage.getItem('done')) === null) return <Container style={{padding:17}}><Typography variant="button">Saved albums will be displayed here:</Typography></Container>
         return(
-            <Container style={{textAlign:'center', overflowY:'scroll', maxHeight:705}}>
-                <Typography variant="h5">Your albums:</Typography>
-                <Container style={{marginTop:50}}>
+            <Container style={{textAlign:'center', overflowY:'auto', maxHeight:705}}>
+                <Switch onChange={()=>this.switchChangeTrue()}></Switch><div>Download as JSON</div>
+                <Container style={{padding:23, borderRadius:10,}}>
+                <Typography variant="button">SAVED ALBUMS:</Typography><br></br>
+                <Button variant="contained" color="default" onClick={()=>{localStorage.clear(); this.forceUpdate()}}>Clear</Button>
+                </Container>
+                <Container style={{marginTop:10}}>
                 <ul style={{listStyle:"none", listStyleType:'none', margin:0, padding: 0}}>
                 {JSON.parse(localStorage.getItem('done')).map((item)=>
-                <Container style={{border:'1px solid black', marginBottom:5}}>
-                    <Button variant="contained" color="secondary" onClick={()=>this.deleteItem(item.id)}>Delete</Button>
-                    <li>Album: {item.title} <p>date: {item.date}</p> <p>country: {item.country}</p></li></Container>)}
+                <Container style={{backgroundColor:'#f3f3f3', marginBottom:5, borderRadius:10, boxShadow: '6px 6px 12px -4px rgba(0,0,0,0.42)'}}>
+                    <Button style={{marginBottom:10, marginTop:10}} variant="contained" color="secondary" size='small' onClick={()=>this.deleteItem(item.id)}>Delete</Button>
+                    <li><Typography variant="overline">Album: </Typography><Typography variant="button">{item.title}</Typography>
+                    <br></br>
+                    <Typography variant="overline">Artist: </Typography><Typography variant="button">{item.artist}</Typography>
+                    <br></br>
+                    <Typography variant="overline"> Date: </Typography><Typography variant="button">{item.date}</Typography>
+                    <br></br>
+                    <Typography variant="overline"> Country: </Typography><Typography variant="button">{item.country}</Typography></li></Container>)}
                 </ul>
                 </Container>
             </Container>
