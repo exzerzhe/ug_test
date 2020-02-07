@@ -44,7 +44,7 @@ exportToJsonFile = () => {
     render(){ 
         if (this.state.checked === true) {
         return <Container style={{textAlign:'center'}}>
-            <Switch onChange={()=>this.switchChangeFalse()}></Switch><br></br>
+            <Switch onChange={()=>this.switchChangeFalse()}></Switch><div>Back to browse</div><br></br>
             <Button style={{marginTop:50}} variant="contained" color="secondary" onClick={()=>this.exportToJsonFile()}>Download your albums data</Button>
         </Container>
 
