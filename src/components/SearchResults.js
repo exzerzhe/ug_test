@@ -45,7 +45,7 @@ this.props.addItem(id)
                 return <Container style={{textAlign:'center', marginTop:40}}><Typography variant="h3">No results</Typography></Container>
             }
         return(
-            <Container style={{ overflowY:'auto', maxHeight:680}}>
+            <Container style={{ overflowY:'auto', maxHeight:window.innerHeight - 70}}>
                 <Container style={{backgroundColor:'#aaaaaa', borderRadius:10, opacity:'0.8'}}>
                 {this.state.choosenAlbums.length !== 0 ?
                 <Container style={{marginTop:10}}>

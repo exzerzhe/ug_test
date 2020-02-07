@@ -52,7 +52,7 @@ exportToJsonFile = () => {
 
          if (JSON.parse(localStorage.getItem('done')) === null) return <Container style={{padding:17}}><Typography variant="button">Saved albums will be displayed here:</Typography></Container>
         return(
-            <Container style={{textAlign:'center', overflowY:'auto', maxHeight:705}}>
+            <Container style={{textAlign:'center', overflowY:'auto', maxHeight:window.innerHeight}}>
                 <Switch onChange={()=>this.switchChangeTrue()}></Switch><div>Download as JSON</div>
                 <Container style={{padding:23, borderRadius:10,}}>
                 <Typography variant="button">SAVED ALBUMS:</Typography><br></br>
