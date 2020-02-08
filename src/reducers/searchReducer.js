@@ -2,7 +2,7 @@ import { SEARCH_DATA_ERROR, DELETE_ITEM, ADD_ITEM} from '../actions/searchAction
 import { SEARCH_DATA_PENDING } from '../actions/searchActions'
 import { SEARCH_DATA_SUCCESS } from '../actions/searchActions'
 import { SAVE_LOCAL_STORAGE_DATA } from '../actions/searchActions'
-import { createPalette } from '@material-ui/core'
+
 
 
 
@@ -13,7 +13,7 @@ const initialState = {
     localStorageData: [],
     update: false,
     refresh: false,
-    removedData: {},
+    removedData: [],
     dataCount: ''
 
 }
@@ -30,14 +30,17 @@ export function searchReducer (state=initialState, action) {
                     return{...state, localStorageData:action.localStorageData, update:true, refresh: false}
                     case DELETE_ITEM:
                         {
+                            let removedData = state.data.filter((item, index)=>index === action.payload)
+                            let newData = state.removedData.concat(removedData)
                             return {...state, data: state.data.filter((item, index)=> index !== action.payload), refresh:true,
-                            removedData: state.data.filter((item, index)=>index === action.payload)}
+                            removedData: newData}
                         }  
                         
                         case ADD_ITEM:{
-                            let removedData = state.removedData.filter((item, index)=>index !== action.id)
+                            let removedData = state.removedData.filter((item, index)=>item.id === action.index)
+                            let removedDataSaved = state.removedData.filter((item, index)=>item.id !== action.index)
                             let newData = state.data.concat(removedData)
-                            return {...state, data: newData, }
+                            return {...state, data: newData, removedData:removedDataSaved }
                         }
                     default:
                         return state
