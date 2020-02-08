@@ -60,13 +60,13 @@ this.props.addItem(id)
                 <Container style={{border:'1px solid white', marginBottom:10, borderRadius:5, backgroundColor:'#f3f3f3', opacity:'0.8', boxShadow:'6px 6px 12px -4px rgba(0,0,0,0.42)'}}>
                     <li key={item.id}>
                         <Grid container spacing = {3}>
-                    <Grid item xs = {11}>
+                    <Grid item xs = {10}>
                         <Container style={{textAlign:'center'}}>
                     <Typography variant="overline"> Album: </Typography><Typography variant='button'>{item.title}</Typography>
                     <Typography variant="overline"> Artist: </Typography><Typography variant="button">{item["artist-credit"][0].artist.name}</Typography>
                     </Container>
                     </Grid>
-                    <Grid item xs ={1}>
+                    <Grid item xs ={2}>
                                 <Container style={{padding:5}}>
                     <Button variant="contained" color="primary" onClick={()=>{this.props.deleteItem(index); this.handleChange(item.id, item.title, item.country, item.date, item.checked, item["artist-credit"][0].artist.name )}}>add</Button>
                     </Container>
